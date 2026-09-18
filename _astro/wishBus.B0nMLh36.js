@@ -1,0 +1,1 @@
+function e(e,t){document.dispatchEvent(new CustomEvent(e,{detail:t}))}function t(e,t){let n=e=>t(e.detail);return document.addEventListener(e,n),()=>document.removeEventListener(e,n)}var n=0,r=()=>--n;export{r as n,t as r,e as t};
