@@ -1,0 +1,67 @@
+---
+import { event } from '../config/event';
+---
+
+<!-- preload="none": file musik tidak diunduh sebelum undangan dibuka. -->
+<audio id="bgm" src={event.music.src} preload="none" loop></audio>
+
+<button
+  id="bgm-toggle"
+  type="button"
+  class="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-40 hidden h-12 w-12 items-center justify-center rounded-full bg-ink/85 text-paper shadow-lg backdrop-blur"
+  aria-label="Putar musik"
+  aria-pressed="false"
+>
+  <svg data-icon="play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M8 5v14l11-7z"></path>
+  </svg>
+  <svg data-icon="pause" class="hidden animate-[spin_4s_linear_infinite]" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2.5" fill="currentColor"></circle>
+  </svg>
+</button>
+
+<script>
+  const audio = document.getElementById('bgm') as HTMLAudioElement;
+  const btn = document.getElementById('bgm-toggle') as HTMLButtonElement;
+  let broken = false;
+
+  const render = () => {
+    const playing = !audio.paused;
+    btn.setAttribute('aria-pressed', String(playing));
+    btn.setAttribute('aria-label', playing ? 'Jeda musik' : 'Putar musik');
+    btn.querySelector('[data-icon="play"]')!.classList.toggle('hidden', playing);
+    btn.querySelector('[data-icon="pause"]')!.classList.toggle('hidden', !playing);
+  };
+
+  const play = () => {
+    if (broken) return;
+    audio.play().catch((err) => console.warn('musik tidak bisa diputar', err));
+  };
+
+  audio.addEventListener('play', render);
+  audio.addEventListener('pause', render);
+  audio.addEventListener('error', () => {
+    // File musik belum ada / gagal dimuat → sembunyikan tombol.
+    broken = true;
+    btn.classList.add('!hidden');
+  });
+  btn.addEventListener('click', () => (audio.paused ? play() : audio.pause()));
+
+  // Dipanggil dalam handler klik "Buka Undangan", jadi lolos kebijakan autoplay.
+  document.addEventListener('invitation:open', () => {
+    btn.classList.remove('hidden');
+    btn.classList.add('flex');
+    play();
+  });
+
+  // Jeda saat tab/aplikasi ditinggalkan (mis. pindah dari WA).
+  let resumeOnReturn = false;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      resumeOnReturn = !audio.paused;
+      audio.pause();
+    } else if (resumeOnReturn) {
+      play();
+    }
+  });
+</script>

@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import { event } from '../config/event';
+// Font yang langsung tampil di cover → preload supaya tidak telat ditemukan.
+import scriptFont from '@fontsource/great-vibes/files/great-vibes-latin-400-normal.woff2?url';
+import serifFont from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Kunci scroll sampai cover dibuka. */
+  locked?: boolean;
+}
+
+const { title = event.site.title, description = event.site.description, locked = false } = Astro.props;
+const site = Astro.site!;
+// OG tags sama untuk semua tamu: URL kanonik tanpa ?to=
+const canonical = new URL('/', site).href;
+const ogImage = new URL(event.site.ogImage, site).href;
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+---
+
+<!doctype html>
+<html lang="id" class={locked ? 'is-locked' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content={event.site.themeColor} />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={event.site.title} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {supabaseUrl && <link rel="preconnect" href={supabaseUrl} crossorigin />}
+    {
+      locked && (
+        <>
+          <link rel="preload" href={scriptFont} as="font" type="font/woff2" crossorigin />
+          <link rel="preload" href={serifFont} as="font" type="font/woff2" crossorigin />
+        </>
+      )
+    }
+
+    <script is:inline>
+      // Sebelum paint: tandai JS aktif & reset posisi scroll (reload tidak melompat ke tengah).
+      document.documentElement.classList.add('js');
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      // Fallback untuk WebView lama tanpa dukungan dvh.
+      if (!(window.CSS && CSS.supports('height', '1dvh'))) {
+        var setH = function () {
+          document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px');
+        };
+        setH();
+        window.addEventListener('resize', setH);
+      }
+    </script>
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh antialiased">
+    <slot />
+  </body>
+</html>

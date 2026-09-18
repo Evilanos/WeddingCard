@@ -1,0 +1,26 @@
+---
+import { event } from '../config/event';
+---
+
+{
+  event.story.length > 0 && (
+    <section id="cerita" class="bg-paper-deep">
+      <div class="section">
+        <div class="text-center">
+          <p class="eyebrow" data-reveal>Love Story</p>
+          <h2 class="section-title mt-2" data-reveal>Kisah Kami</h2>
+        </div>
+        <ol class="relative mt-10 space-y-8 border-l border-gold-soft pl-6">
+          {event.story.map((s) => (
+            <li class="relative" data-reveal>
+              <span class="absolute -left-[31px] top-1 h-3 w-3 rounded-full bg-gold ring-4 ring-paper-deep" />
+              <p class="text-xs tracking-widest text-gold">{s.tahun}</p>
+              <h3 class="mt-1 text-xl">{s.judul}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-ink-soft">{s.teks}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}

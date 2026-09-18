@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import AdminApp from '../admin/AdminApp';
+---
+
+<Base title="Admin Undangan">
+  <AdminApp client:only="preact" />
+  <noscript><p class="p-6 text-center">Halaman admin membutuhkan JavaScript.</p></noscript>
+</Base>

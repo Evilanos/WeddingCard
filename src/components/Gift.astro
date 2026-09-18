@@ -1,0 +1,36 @@
+---
+import { event } from '../config/event';
+
+const g = event.gift;
+const copyBtn = 'btn btn-outline !min-h-9 !py-1.5 text-xs';
+---
+
+<section id="hadiah" class="section text-center">
+  <p class="eyebrow" data-reveal>Wedding Gift</p>
+  <h2 class="section-title mt-2" data-reveal>Tanda Kasih</h2>
+  <p class="mt-4 text-sm leading-relaxed text-ink-soft" data-reveal>{g.intro}</p>
+
+  <div class="mt-8 space-y-4">
+    {
+      g.accounts.map((acc) => (
+        <div class="card text-left" data-reveal>
+          <p class="text-xs font-semibold tracking-[0.2em] text-gold">{acc.bank}</p>
+          <p class="mt-2 font-mono text-xl tracking-wider">{acc.nomor}</p>
+          <p class="text-sm text-ink-soft">a.n. {acc.atasNama}</p>
+          <button type="button" class={`${copyBtn} mt-4`} data-copy={acc.nomor}>
+            Salin Nomor Rekening
+          </button>
+        </div>
+      ))
+    }
+
+    <div class="card text-left" data-reveal>
+      <p class="text-xs font-semibold tracking-[0.2em] text-gold">KIRIM KADO</p>
+      <p class="mt-2 font-semibold">{g.alamat.penerima}</p>
+      <p class="mt-1 text-sm leading-relaxed text-ink-soft">{g.alamat.teks}</p>
+      <button type="button" class={`${copyBtn} mt-4`} data-copy={`${g.alamat.penerima}\n${g.alamat.teks}`}>
+        Salin Alamat
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// Semua .jpg/.jpeg/.png/.webp di src/assets/gallery, urut nama file.
+const modules = import.meta.glob<{ default: ImageMetadata }>('../assets/gallery/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
+const images = await Promise.all(
+  Object.keys(modules)
+    .sort()
+    .map(async (key, i) => {
+      const src = modules[key].default;
+      // Versi besar untuk lightbox (dimuat hanya saat diklik).
+      const large = await getImage({ src, width: Math.min(src.width, 1600), format: 'webp', quality: 78 });
+      return { src, large: large.src, alt: `Foto prewedding ${i + 1}` };
+    }),
+);
+---
+
+{
+  images.length > 0 && (
+    <section id="galeri" class="section">
+      <div class="text-center">
+        <p class="eyebrow" data-reveal>Our Moments</p>
+        <h2 class="section-title mt-2" data-reveal>Galeri</h2>
+      </div>
+      <div class="mt-8 columns-2 gap-2 [&>*]:mb-2">
+        {images.map((img, i) => (
+          <button
+            type="button"
+            class="block w-full overflow-hidden rounded-lg"
+            data-gallery-item
+            data-large={img.large}
+            data-alt={img.alt}
+            aria-label={`Perbesar foto ${i + 1}`}
+          >
+            <Picture
+              src={img.src}
+              alt={img.alt}
+              formats={['avif', 'webp']}
+              widths={[240, 400, 640]}
+              sizes="(max-width: 448px) 50vw, 220px"
+              loading="lazy"
+              decoding="async"
+              class="h-auto w-full transition duration-500 hover:scale-105"
+            />
+          </button>
+        ))}
+      </div>
+
+      <dialog
+        id="lightbox"
+        class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-black/90"
+        aria-label="Foto galeri"
+      >
+        <form method="dialog" class="h-screen-safe flex w-screen items-center justify-center p-4">
+          <img data-lightbox-img alt="" class="max-h-full max-w-full rounded-lg object-contain" decoding="async" />
+          <button class="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] rounded-full bg-white/20 px-4 py-2 text-sm text-white">
+            Tutup ✕
+          </button>
+        </form>
+      </dialog>
+    </section>
+  )
+}
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = dialog?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  document.querySelectorAll<HTMLButtonElement>('[data-gallery-item]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!dialog || !img) return;
+      if (typeof dialog.showModal !== 'function') {
+        // WebView lama tanpa <dialog>: buka gambar langsung.
+        window.open(btn.dataset.large, '_blank');
+        return;
+      }
+      img.src = btn.dataset.large ?? '';
+      img.alt = btn.dataset.alt ?? '';
+      dialog.showModal();
+    });
+  });
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog || e.target === dialog.firstElementChild) dialog.close();
+  });
+</script>

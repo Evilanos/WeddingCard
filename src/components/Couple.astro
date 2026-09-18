@@ -1,0 +1,58 @@
+---
+import { Picture } from 'astro:assets';
+import groomImg from '../assets/couple/groom.jpg';
+import brideImg from '../assets/couple/bride.jpg';
+import { event } from '../config/event';
+
+const people = event.coupleOrder.map((key) => ({
+  person: event[key],
+  img: key === 'groom' ? groomImg : brideImg,
+}));
+---
+
+<section id="mempelai" class="section text-center">
+  <p class="eyebrow" data-reveal>Assalamu'alaikum Wr. Wb.</p>
+  <p class="mt-4 text-sm leading-relaxed text-ink-soft" data-reveal>
+    Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:
+  </p>
+
+  {
+    people.map(({ person, img }, i) => (
+      <>
+        {i === 1 && (
+          <p class="my-8 font-script text-6xl text-gold" aria-hidden="true">
+            &amp;
+          </p>
+        )}
+        <div class="mt-10" data-reveal>
+          <Picture
+            src={img}
+            alt={`Foto ${person.panggilan}`}
+            formats={['avif', 'webp']}
+            widths={[240, 480]}
+            sizes="240px"
+            loading="lazy"
+            class="mx-auto aspect-[4/5] w-48 rounded-t-full object-cover ring-4 ring-white shadow-lg"
+          />
+          <h3 class="mt-6 font-script text-5xl font-normal">{person.panggilan}</h3>
+          <p class="mt-2 font-serif text-xl font-semibold">{person.namaLengkap}</p>
+          <p class="mt-2 text-sm text-ink-soft">
+            {person.anakKe}
+            <br />
+            {person.ayah} &amp; {person.ibu}
+          </p>
+          {person.instagram && (
+            <a
+              href={`https://instagram.com/${person.instagram}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-outline mt-4 !min-h-9 !py-1.5 text-xs"
+            >
+              @{person.instagram}
+            </a>
+          )}
+        </div>
+      </>
+    ))
+  }
+</section>

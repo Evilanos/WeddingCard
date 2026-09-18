@@ -1,0 +1,50 @@
+---
+import { event } from '../config/event';
+import { formatDate } from '../lib/time';
+
+const [first, second] = event.coupleOrder.map((k) => event[k].panggilan);
+const units = [
+  ['days', 'Hari'],
+  ['hours', 'Jam'],
+  ['minutes', 'Menit'],
+  ['seconds', 'Detik'],
+] as const;
+---
+
+<section id="hero" tabindex="-1" class="min-h-screen-safe outline-none flex flex-col items-center justify-center bg-paper-deep px-6 py-20 text-center">
+  <p class="eyebrow" data-reveal>Kami Akan Menikah</p>
+  <h2 class="mt-4 font-script text-7xl font-normal leading-none text-ink" data-reveal>
+    {first}<br /><span class="text-5xl text-gold">&amp;</span><br />{second}
+  </h2>
+  <p class="mt-6 font-serif text-xl" data-reveal>{formatDate(event.resepsi.mulai)}</p>
+
+  <div
+    class="mt-10 w-full max-w-sm"
+    data-countdown
+    data-target={event.resepsi.mulai}
+    data-end={event.selesaiSemua}
+    data-reveal
+  >
+    <div class="grid grid-cols-4 gap-2" data-countdown-running>
+      {
+        units.map(([key, label]) => (
+          <div class="rounded-xl bg-white/70 py-3 ring-1 ring-gold-soft/60">
+            <span class="block font-serif text-3xl font-semibold tabular-nums" data-unit={key}>
+              –
+            </span>
+            <span class="text-[11px] uppercase tracking-wider text-ink-soft">{label}</span>
+          </div>
+        ))
+      }
+    </div>
+    <p class="hidden font-serif text-xl italic text-ink" data-countdown-today>
+      Hari bahagia kami telah tiba ✨
+    </p>
+    <div class="hidden" data-countdown-done>
+      <p class="font-serif text-2xl text-ink">Terima kasih</p>
+      <p class="mt-2 text-sm text-ink-soft">
+        atas doa, kehadiran, dan ucapan yang telah diberikan. Kebahagiaan kami lengkap karena Anda.
+      </p>
+    </div>
+  </div>
+</section>
