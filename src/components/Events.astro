@@ -21,15 +21,14 @@ const iconCal = 'M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 
 <section id="acara" class="bg-paper-deep">
   <div class="section text-center">
     <p class="eyebrow" data-reveal>Save the Date</p>
-    <h2 class="section-title mt-2" data-reveal>Rangkaian Acara</h2>
+    <h2 class="section-title mt-2" data-reveal>Wedding Events</h2>
 
     <div class="mt-10 space-y-6">
       <!--
-        Akad: TIDAK dirender saat build. Diisi scripts/invite.ts via textContent
-        hanya jika RPC get_guest mengembalikan data akad (tamu sesi akad/keduanya).
+        Holy Matrimony (Akad): Populated via scripts/invite.ts if private session exists
       -->
       <article class="card hidden" data-akad-card data-reveal>
-        <h3 class="font-script text-4xl font-normal">Akad Nikah</h3>
+        <h3 class="font-script text-4xl font-normal">Holy Matrimony</h3>
         <div class="divider !my-4"></div>
         <p class="font-serif text-lg font-semibold" data-akad="tanggal"></p>
         <p class="mt-1 text-sm text-ink-soft" data-akad="waktu"></p>
@@ -38,15 +37,15 @@ const iconCal = 'M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 
         <div class="mt-6 flex flex-wrap justify-center gap-2">
           <a class="btn btn-primary" data-akad="maps" target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d={iconMap}></path></svg>
-            Lihat Maps
+            View on Maps
           </a>
           <a class="btn btn-outline" data-akad="gcal" target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d={iconCal}></path></svg>
-            Save the Date
+            Add to Calendar
           </a>
         </div>
         <button type="button" class="mt-3 text-xs text-ink-soft underline underline-offset-4" data-akad="ics">
-          Unduh file kalender (.ics)
+          Download Calendar File (.ics)
         </button>
       </article>
 
@@ -60,15 +59,15 @@ const iconCal = 'M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 
         <div class="mt-6 flex flex-wrap justify-center gap-2">
           <a class="btn btn-primary" href={r.mapsUrl} target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d={iconMap}></path></svg>
-            Lihat Maps
+            View on Maps
           </a>
           <a class="btn btn-outline" href={resepsiCal} target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d={iconCal}></path></svg>
-            Save the Date
+            Add to Calendar
           </a>
         </div>
         <a href="/resepsi.ics" download class="mt-3 inline-block text-xs text-ink-soft underline underline-offset-4">
-          Unduh file kalender (.ics)
+          Download Calendar File (.ics)
         </a>
       </article>
     </div>

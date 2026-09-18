@@ -186,11 +186,11 @@ export default function WishList() {
   return (
     <div ref={rootRef} class="mt-8">
       <div class="mb-3 flex items-center justify-between text-xs text-ink-soft">
-        <span>{items.filter((w) => !w.awaitingModeration).length > 0 ? 'Ucapan terbaru' : ''}</span>
+        <span>{items.filter((w) => !w.awaitingModeration).length > 0 ? 'Recent Wishes' : ''}</span>
         {live !== 'off' && (
           <span class="flex items-center gap-1.5">
             <span class={`h-2 w-2 rounded-full ${live === 'realtime' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-            {live === 'realtime' ? 'Live' : 'Diperbarui berkala'}
+            {live === 'realtime' ? 'Live' : 'Updated periodically'}
           </span>
         )}
       </div>
@@ -206,7 +206,7 @@ export default function WishList() {
         ))}
 
         {!loading && !error && items.length === 0 && (
-          <p class="py-10 text-center text-sm text-ink-soft">Belum ada ucapan. Jadilah yang pertama!</p>
+          <p class="py-10 text-center text-sm text-ink-soft">No wishes yet. Be the first to share a blessing!</p>
         )}
         {loading && (
           <div class="space-y-3">
@@ -217,15 +217,15 @@ export default function WishList() {
         )}
         {error && (
           <div class="py-4 text-center">
-            <p class="text-sm text-ink-soft">Gagal memuat ucapan.</p>
+            <p class="text-sm text-ink-soft">Failed to load wishes.</p>
             <button type="button" class="btn btn-outline mt-2 !min-h-9 text-xs" onClick={() => void loadMore()}>
-              Coba lagi
+              Try again
             </button>
           </div>
         )}
         {hasMore && !loading && !error && items.length > 0 && (
           <button type="button" class="btn btn-outline w-full !min-h-9 text-xs" onClick={() => void loadMore()}>
-            Muat ucapan lainnya
+            Load more wishes
           </button>
         )}
         <div ref={sentinelRef} class={hasMore ? 'h-px' : 'hidden'} />
@@ -248,7 +248,7 @@ function Bubble({ wish }: { wish: LocalWish }) {
         <header class="flex flex-wrap items-center gap-x-2 gap-y-1">
           <h3 class="break-words font-sans text-sm font-semibold text-ink">{wish.nama}</h3>
           {wish.is_guest && (
-            <span class="rounded-full bg-gold/15 px-2 py-0.5 text-[10px] font-medium text-gold">Tamu Undangan</span>
+            <span class="rounded-full bg-gold/15 px-2 py-0.5 text-[10px] font-medium text-gold">Invited Guest</span>
           )}
           {wish.rsvp_status && (
             <span class={`rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE_CLASS[wish.rsvp_status]}`}>
@@ -260,9 +260,9 @@ function Bubble({ wish }: { wish: LocalWish }) {
         <p class="mt-1.5 whitespace-pre-line break-words text-sm leading-relaxed text-ink">{wish.pesan}</p>
         <footer class="mt-1.5 text-[11px] text-ink-soft">
           {wish.pending ? (
-            'Mengirim…'
+            'Sending…'
           ) : wish.awaitingModeration ? (
-            'Menunggu moderasi · hanya terlihat oleh Anda'
+            'Awaiting moderation · visible only to you'
           ) : (
             <time dateTime={wish.created_at}>{formatRelative(wish.created_at)}</time>
           )}

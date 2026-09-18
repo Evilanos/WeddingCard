@@ -4,15 +4,15 @@ import { formatDate } from '../lib/time';
 
 const [first, second] = event.coupleOrder.map((k) => event[k].panggilan);
 const units = [
-  ['days', 'Hari'],
-  ['hours', 'Jam'],
-  ['minutes', 'Menit'],
-  ['seconds', 'Detik'],
+  ['days', 'Days'],
+  ['hours', 'Hours'],
+  ['minutes', 'Minutes'],
+  ['seconds', 'Seconds'],
 ] as const;
 ---
 
 <section id="hero" tabindex="-1" class="min-h-screen-safe outline-none flex flex-col items-center justify-center bg-paper-deep px-6 py-20 text-center">
-  <p class="eyebrow" data-reveal>Kami Akan Menikah</p>
+  <p class="eyebrow" data-reveal>We are getting married!</p>
   <h2 class="mt-4 font-script text-7xl font-normal leading-none text-ink" data-reveal>
     {first}<br /><span class="text-5xl text-gold">&amp;</span><br />{second}
   </h2>
@@ -38,12 +38,12 @@ const units = [
       }
     </div>
     <p class="hidden font-serif text-xl italic text-ink" data-countdown-today>
-      Hari bahagia kami telah tiba ✨
+      Our blessed day has arrived ✨
     </p>
     <div class="hidden" data-countdown-done>
-      <p class="font-serif text-2xl text-ink">Terima kasih</p>
+      <p class="font-serif text-2xl text-ink">Thank You</p>
       <p class="mt-2 text-sm text-ink-soft">
-        atas doa, kehadiran, dan ucapan yang telah diberikan. Kebahagiaan kami lengkap karena Anda.
+        for your prayers, presence, and warmest wishes. Our happiness is complete with you.
       </p>
     </div>
   </div>

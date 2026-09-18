@@ -183,7 +183,7 @@ function initCopy() {
     if (!btn) return;
     const text = btn.dataset.copy ?? '';
     const ok = await copyText(text);
-    toast(ok ? 'Berhasil disalin ✓' : `Tidak bisa menyalin otomatis. Silakan salin manual:\n${text}`, ok ? 2000 : 6000);
+    toast(ok ? 'Copied to clipboard ✓' : `Could not copy automatically. Please copy manually:\n${text}`, ok ? 2000 : 6000);
   });
 }
 
