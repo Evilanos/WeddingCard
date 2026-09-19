@@ -21,6 +21,8 @@ export type Person = {
 
 export type BankAccount = { bank: string; nomor: string; atasNama: string };
 
+const basePath = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
+
 export const event = {
   site: {
     title: 'The Wedding of Evita & Dedy',
@@ -103,7 +105,7 @@ export const event = {
   },
 
   music: {
-    src: '/music/backsound.mp3',
+    src: `${basePath}/music/backsound.mp3`,
     judul: 'Wedding Song',
   },
 

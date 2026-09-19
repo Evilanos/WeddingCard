@@ -4,10 +4,15 @@ import preact from '@astrojs/preact';
 import tailwindcss from '@tailwindcss/vite';
 
 // PUBLIC_SITE_URL wajib https absolut: dipakai untuk OG tags & link personal tamu.
-const site = process.env.PUBLIC_SITE_URL || 'https://example.com';
+// const site = process.env.PUBLIC_SITE_URL || 'https://example.com';
+const site = process.env.PUBLIC_SITE_URL || 'https://Evilanos.github.io';
+const isGitHubPages = site.includes('github.io');
 
 export default defineConfig({
+  // site,
   site,
+  base: isGitHubPages ? '/WeddingCard/' : '/',
+  // base: '/WeddingCard',
   output: 'static',
   integrations: [preact()],
   build: {
