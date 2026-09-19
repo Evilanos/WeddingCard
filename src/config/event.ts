@@ -23,7 +23,7 @@ export type BankAccount = { bank: string; nomor: string; atasNama: string };
 
 export const event = {
   site: {
-    title: 'The Wedding of Raka & Nadia',
+    title: 'The Wedding of Raka & Omak',
     description: 'Dengan penuh sukacita, kami mengundang Anda untuk hadir di hari bahagia kami.',
     // Gambar OG: 1200×630, < 300KB, di /public (URL absolut dibentuk dari PUBLIC_SITE_URL)
     ogImage: '/og.jpg',
